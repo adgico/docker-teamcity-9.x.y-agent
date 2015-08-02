@@ -1,79 +1,8 @@
 #!/bin/bash
 
-function check_name
-{
-	if [[ $1 == --name=* ]] ; then
-		NAME=`sed -e "s/^\-\-name\=//" <<< $1`
-		return 0
-	fi
+MY_PATH=`dirname $0`
 
-	if [[ $1 == -n=* ]] ; then
-		NAME=`sed -e "s/^\-n\=//" <<< $1`
-		return 0
-	fi
-
-	return 1 # not found
-}
-
-function check_server_url
-{
-	if [[ $1 == --server-url=* ]] ; then
-		SERVER_URL=`sed -e "s/^\-\-server\-url\=//" <<< $1`
-		return 0
-	fi
-
-	if [[ $1 == -su=* ]] ; then
-		SERVER_URL=`sed -e "s/^\-su\=//" <<< $1`
-		return 0
-	fi
-
-	return 1 # not found
-}
-
-function check_agent_name
-{
-	if [[ $1 == --agent-name=* ]] ; then
-		AGENT=`sed -e "s/^\-\-agent\-name\=//" <<< $1`
-		return 0
-	fi
-
-	if [[ $1 == -an=* ]] ; then
-		AGENT=`sed -e "s/^\-an\=//" <<< $1`
-		return 0
-	fi
-
-	return 1 # not found
-}
-
-function check_agent_port
-{
-	if [[ $1 == --agent-port=* ]] ; then
-		AGENT_PORT=`sed -e "s/^\-\-agent\-port\=//" <<< $1`
-		return 0
-	fi
-
-	if [[ $1 == -ap=* ]] ; then
-		AGENT_PORT=`sed -e "s/^\-ap\=//" <<< $1`
-		return 0
-	fi
-
-	return 1 # not found
-}
-
-function check_agent_url
-{
-	if [[ $1 == --agent-url=* ]] ; then
-		AGENT_URL=`sed -e "s/^\-\-agent\-url\=//" <<< $1`
-		return 0
-	fi
-
-	if [[ $1 == -au=* ]] ; then
-		AGENT_URL=`sed -e "s/^\-au\=//" <<< $1`
-		return 0
-	fi
-
-	return 1 # not found
-}
+source $MY_PATH/command-line.sh
 
 function output_usage
 {
@@ -91,20 +20,13 @@ function output_usage
 	echo
 }
 
-function unknown_parameter
-{
-	echo
-	echo "Unknown parameter \"$1\""
-	output_usage
-	exit 1;
-}
-
 for PARAMETER in $* ; do
 	check_name "$PARAMETER" ||
 	check_server_url "$PARAMETER" ||
 	check_agent_name "$PARAMETER" ||
 	check_agent_port "$PARAMETER" ||
 	check_agent_url "$PARAMETER" ||
+	check_extension "$PARAMETER" ||
 	unknown_parameter "$PARAMETER"
 done
 
@@ -133,5 +55,5 @@ if [ "$AGENT_URL" != "" ] ; then
 	ENV="$ENV -e OWN_URL=$AGENT_URL"
 fi
 
-docker run --name=$NAME -p $PORT_MAPPING -d $ENV adgico/teamcity-9.1-agent
+docker run --name=$NAME -p $PORT_MAPPING -d $ENV adgico/teamcity-9.1-agent$EXTENSION
 
