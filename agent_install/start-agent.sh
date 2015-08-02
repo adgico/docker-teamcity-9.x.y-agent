@@ -7,7 +7,7 @@ PROPERTIES_FILE=/TeamCity/buildAgent/conf/buildAgent.properties
 BASE_PROPERTIES_FILE=/TeamCity/buildAgent/conf/base.buildAgent.properties
 
 if [ "$SERVER_URL" == "" ] ; then
-	SERVER_URL=localhost:80
+	SERVER_URL=localhost:8111
 fi
 
 if [ "$AGENT" == "" ] ; then
