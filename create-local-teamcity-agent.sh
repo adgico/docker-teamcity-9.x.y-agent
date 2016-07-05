@@ -23,7 +23,7 @@ for PARAMETER in $* ; do
 	check_server_url "$PARAMETER" ||
 	check_agent_name "$PARAMETER" ||
 	check_server_name "$PARAMETER" ||
-	check_extension "$PARAMETER" || 
+	check_extension "$PARAMETER" ||
 	unknown_parameter "$PARAMETER"
 done
 
@@ -49,5 +49,4 @@ fi
 
 ENV="$ENV -e SERVER_URL=$SERVER_URL:8111 -e AGENT=$AGENT"
 
-docker run --name=$NAME -d --link=$SERVER_NAME $ENV adgico/teamcity-9.1-agent$EXTENSION
-
+docker run --name=$NAME -d --link=$SERVER_NAME $ENV adgico/teamcity-9.x.y-agent$EXTENSION

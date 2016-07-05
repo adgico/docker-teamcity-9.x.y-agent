@@ -55,5 +55,4 @@ if [ "$AGENT_URL" != "" ] ; then
 	ENV="$ENV -e OWN_URL=$AGENT_URL"
 fi
 
-docker run --name=$NAME -p $PORT_MAPPING -d $ENV adgico/teamcity-9.1-agent$EXTENSION
-
+docker run --name=$NAME -p $PORT_MAPPING -d $ENV adgico/teamcity-9.x.y-agent$EXTENSION
